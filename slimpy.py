@@ -17,7 +17,10 @@ console_sh.setLevel(logging.DEBUG)
 console_sh.setFormatter(logging.Formatter('%(asctime)s %(name)-20s %(levelname)-8s %(message)s'))
 logger.addHandler(console_sh)
 
-slimproto = SlimProto('192.168.1.53')
+if not len(sys.argv) == 2:
+    print "Usage: %s [ip-address of LMS]" % sys.argv[0]
+
+slimproto = SlimProto(sys.argv[1])
 slimproto.connect()
 
 slimhttp   = SlimHttp()
