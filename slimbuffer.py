@@ -23,6 +23,8 @@ class SlimBuffer(threading.Thread):
     def __init__(self, size, slimhttp, slimproto):
         
         threading.Thread.__init__(self)
+        self.running   = True
+                
         self.slimhttp  = slimhttp
         self.slimproto = slimproto
         
@@ -30,14 +32,11 @@ class SlimBuffer(threading.Thread):
         self.readPtr   = 0
         self.writePtr  = 0
         self.fillCount = 0
-
         self.buffer    = bytearray(self.size)
         self.mv        = memoryview(self.buffer)
         
-        self.running   = True
         self.lock      = threading.Lock()
         self.lock.acquire()
-        
         self.buflock   = threading.Lock()
         
         self.flush()
@@ -45,7 +44,14 @@ class SlimBuffer(threading.Thread):
     def flush(self):
         self.begin = 0
         self.end   = 0
-        
+
+    def stop(self):
+        self.running = False
+        try:
+            self.lock.release()
+        except threading.ThreadError:
+            pass
+
     def run(self):
         while self.running:
             self.lock.acquire()

@@ -25,11 +25,11 @@ class SlimAudio(threading.Thread):
         
         threading.Thread.__init__(self)
         self.logger = logging.getLogger("SlimAudio")
-
+        self.running    = True
+        
         self.slimbuffer = slimbuffer
         self.slimproto = slimproto
         
-        self.running    = True
         self.samplesize = None
         self.endian     = None
         self.rate       = None
@@ -48,6 +48,13 @@ class SlimAudio(threading.Thread):
             self.alsa.close()
             del self.alsa
         self.alsa = alsaaudio.PCM(alsaaudio.PCM_PLAYBACK, alsaaudio.PCM_NORMAL, card='plughw:CARD=PCH,DEV=0')
+
+    def stop(self):
+        self.running = False
+        try:
+            self.lock.release()
+        except threading.ThreadError:
+            pass
 
     def run(self):
         
