@@ -1,4 +1,4 @@
-#   (c) 2011 Bart Lauret
+#   (c) 2012 terual
 #
 #   This file is part of slimpy.
 #
