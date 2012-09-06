@@ -30,6 +30,7 @@ class SlimAudio(threading.Thread):
         self.slimbuffer = slimbuffer
         self.slimproto = slimproto
         
+        self.supported  = []
         self.samplesize = None
         self.endian     = None
         self.rate       = None
@@ -38,7 +39,8 @@ class SlimAudio(threading.Thread):
         self.playing    = True
         
         self.alsa = None
-        self.init()       
+        self.init()
+        self.get_supported_rates()
 
         self.lock = threading.Lock()        
         self.lock.acquire()
@@ -75,10 +77,22 @@ class SlimAudio(threading.Thread):
                 except threading.ThreadError:
                     pass
 
+    def get_supported_rates(self):
+        for rate in [11025, 22050, 32000, 44100, 48000, 8000, 12000, 16000, 24000, 96000, 88200, 192000, 176400]:
+            try:
+                if self.alsa.setrate(rate) == rate:
+                    self.supported.append(rate)
+            except alsaaudio.ALSAAudioError:
+                pass
+        self.logger.debug("Supported rates: %s", self.supported)
+        self.init()
         
     def set_rate_format(self, rate, samplesize, endian):
-
         self.init()
+
+        if not rate in self.supported:
+            self.logger.info("Rate not supported by device: %i", rate)
+            return False
 
         self.logger.info("Setting rate to %s Hz", rate)
         self.alsa.setrate(rate)
