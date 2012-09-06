@@ -1,9 +1,34 @@
 #!/usr/bin/env python
+#
+#   slimpy - Squeezebox Client
+#   Copyright (C) 2012 terual
+#
+#   This program is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation, either version 3 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+try:
+    import alsaaudio
+except ImportError:
+    print "To install pyalsaaudio:"
+    print "svn co https://pyalsaaudio.svn.sourceforge.net/svnroot/pyalsaaudio/trunk pyalsaaudio"
+    print "cd pyalsaaudio"
+    print "python setup.py build"
+    print "sudo python setup.py install"
 
 import logging
 import threading
 import time
-import alsaaudio
+import sys
 
 from slimproto import SlimProto
 from slimhttp import SlimHttp
@@ -19,6 +44,7 @@ logger.addHandler(console_sh)
 
 if not len(sys.argv) == 2:
     print "Usage: %s [ip-address of LMS]" % sys.argv[0]
+    sys.exit(0)
 
 slimproto = SlimProto(sys.argv[1])
 slimproto.connect()

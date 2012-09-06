@@ -1,12 +1,21 @@
-try:
-    import alsaaudio
-except ImportError:
-    print "To install pyalsaaudio:"
-    print "svn co https://pyalsaaudio.svn.sourceforge.net/svnroot/pyalsaaudio/trunk pyalsaaudio"
-    print "cd pyalsaaudio"
-    print "python setup.py build"
-    print "sudo python setup.py install"
+#   (c) 2012 terual
+#
+#   This file is part of slimpy.
+#
+#   slimpy is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation, either version 3 of the License, or
+#   (at your option) any later version.
+#
+#   slimpy is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with slimpy.  If not, see <http://www.gnu.org/licenses/>.
 
+import alsaaudio
 import threading
 import logging
 
